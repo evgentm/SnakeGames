@@ -1,0 +1,419 @@
+#include <iostream>
+#include <string>
+#include <conio.h>
+#include <ctime>
+#include <windows.h>
+
+using namespace std;
+
+string zmia1 = "^";
+bool astanaviteci = false;
+bool knopkaStop = true;
+const int shuruna = 100;
+const int vusota = 25;
+int xvost, xvostX[1000], xvostY[1000];
+int sloznoste;
+int raspolozeniaZmii1, raspolozeniaZmii2, raspolozenia1Frukta1, raspolozenia2Frukta1, raspolozenia1Frukta2, raspolozenia2Frukta2, raspolozenia1Frukta3, raspolozenia2Frukta3, raspolozenia1Frukta4, raspolozenia2Frukta4, raspolozenia1Frukta5, raspolozenia2Frukta5, balu;
+enum eDirection { stop = 0, levo, pravo, versh, nuz };
+eDirection napramok;
+
+void nastroika() {
+    napramok = stop;
+    raspolozeniaZmii1 = rand() % (shuruna - 9);
+    raspolozeniaZmii2 = rand() % (vusota - 9);
+    raspolozenia1Frukta1 = rand() % shuruna;
+    raspolozenia2Frukta1 = rand() % vusota; 
+
+    raspolozenia1Frukta2 = rand() % shuruna;
+    raspolozenia2Frukta2 = rand() % vusota;
+
+    raspolozenia1Frukta3 = rand() % shuruna;
+    raspolozenia2Frukta3 = rand() % vusota;
+
+    raspolozenia1Frukta4 = rand() % shuruna;
+    raspolozenia2Frukta4 = rand() % vusota;
+
+    raspolozenia1Frukta5 = rand() % shuruna;
+    raspolozenia2Frukta5 = rand() % vusota;
+}
+
+void verxnaPalka() {
+    for (int i = 0; i < shuruna; i++) {
+        cout << "_";
+    }
+    cout << endl;
+}
+
+void raztohubannaVcogo(int i, int j) {
+    if (i == raspolozeniaZmii2 && j == raspolozeniaZmii1) {
+        cout << zmia1;
+    }
+    else if (i == raspolozenia2Frukta1 && j == raspolozenia1Frukta1) {
+        cout << "O";
+    }
+    else if (i == raspolozenia2Frukta2 && j == raspolozenia1Frukta2) {
+        cout << "@";
+    }
+    else if (i == raspolozenia2Frukta3 && j == raspolozenia1Frukta3) {
+        cout << "X";
+    }
+    else if (i == raspolozenia2Frukta4 && j == raspolozenia1Frukta4) {
+        cout << "#";
+    }
+    else if (i == raspolozenia2Frukta5 && j == raspolozenia1Frukta5) {
+        cout << "%";
+    }
+    else {
+        bool probel = false;
+        for (int z = 0; z < xvost; z++) {
+            if (xvostX[z] == j && xvostY[z] == i) {
+                probel = true;
+                cout << "=";
+            }
+        }
+        if (!probel) {
+            cout << " ";
+        }
+    }
+}
+
+void bokobaPalka() {
+    for (int i = 0; i < vusota; i++) {
+        for (int j = 0; j < shuruna; j++) {
+            if (j == 0 || j == shuruna - 1) {
+                cout << "|";
+            }
+            raztohubannaVcogo(i, j);
+        }
+        cout << endl;
+    }
+}
+
+void vremaSpat(int sloznoste, int slep, int pereverka) {
+    if (sloznoste == pereverka) {
+        Sleep(slep);
+    }
+}
+
+void karta(int sloznoste) {
+    system("cls");
+    
+    verxnaPalka();
+    bokobaPalka();
+    verxnaPalka();
+    cout << "\nPoints: " << balu;
+    vremaSpat(sloznoste, 1000, 1);
+    vremaSpat(sloznoste, 900, 2);
+    vremaSpat(sloznoste, 800, 3);
+    vremaSpat(sloznoste, 700, 4);
+    vremaSpat(sloznoste, 600, 5);
+    vremaSpat(sloznoste, 500, 6);
+    vremaSpat(sloznoste, 400, 7);
+    vremaSpat(sloznoste, 300, 8);
+    vremaSpat(sloznoste, 200, 9);
+    vremaSpat(sloznoste, 100, 10);
+}
+
+void atcleshuvanieDvizenie() {
+    if (_kbhit()) {
+        switch (_getch())
+        {
+        case 97:
+            napramok = levo;
+            break;
+        case 100:
+            napramok = pravo;
+            break;
+        case 119:
+            napramok = versh;
+            break;
+        case 115:
+            napramok = nuz;
+            break;
+        case 65:
+            napramok = levo;
+            break;
+        case 68:
+            napramok = pravo;
+            break;
+        case 87:
+            napramok = versh;
+            break;
+        case 83:
+            napramok = nuz;
+            break;
+
+        case 228:
+            napramok = levo;
+            break;
+        case 162:
+            napramok = pravo;
+            break;
+        case 230:
+            napramok = versh;
+            break;
+        case 63:
+            napramok = nuz;
+            break;
+        case 235:
+            napramok = nuz;
+            break;
+        case 148:
+            napramok = levo;
+            break;
+        case 130:
+            napramok = pravo;
+            break;
+        case 150:
+            napramok = versh;
+            break;
+        case 155:
+            napramok = nuz;
+            break;
+        }
+    }
+}
+
+void funkciaDlaVuboraNatpusi(int nomerSlova, string slova1, string slova2, string slova3) {
+    if (nomerSlova == 1) {
+        cout << "\n-------------- " << slova1 << " --------------";
+    }
+    if (nomerSlova == 2) {
+        cout << "\n-------------- " << slova2 << " --------------";
+    }
+    if (nomerSlova == 3) {
+        cout << "\n-------------- " << slova3 << " --------------";
+    }
+}
+
+void selXvost(int nomerSlova){
+    funkciaDlaVuboraNatpusi(nomerSlova, "The snake decided to eat itself out of hunger", "The snake was so worthy that it ate itself", "The snake confused its tail with food");
+}
+
+void vrezalsaVStenu(int nomerSlova) {
+    funkciaDlaVuboraNatpusi(nomerSlova, "The snake did not see the wall and crashed into it", "The snake went out of reach", "The starving snake tasted the wall");
+}
+
+void funkciaDlaVubora(int nomerPrigrasha, int nomer) {
+    if (nomerPrigrasha == nomer) {
+        int nomerSlova = 1 + rand() % 3;
+        if (nomerPrigrasha == 2) {
+            selXvost(nomerSlova);
+        }
+        if (nomerPrigrasha == 1) {
+            vrezalsaVStenu(nomerSlova);
+        }
+    }
+}
+
+void slovaPruProigrashe(int nomerPrigrasha) {
+        funkciaDlaVubora(nomerPrigrasha, 1);
+        funkciaDlaVubora(nomerPrigrasha, 2);
+}
+
+void knopkaStart() {
+    Sleep(1000);
+    cout << "                          ______________________" << endl;
+    cout << "                         |                      |" << endl;
+    cout << "                         |        _Start_       |" << endl;
+    cout << "                          ______________________" << endl;
+}
+
+void conecIgpu(int nomerPrigrasha) {
+    system("cls");
+    cout << "   ___________         ____        ____        ____   ____________ " << endl;
+    cout << "  __         __       __  __       __  __    __  __   __" << endl;
+    cout << " __                  __    __      __   __  __   __   __" << endl;
+    cout << " __                 __________     __    ____    __   __ ________" << endl;
+    cout << " __       ______   ____________    __            __   __" << endl;
+    cout << "  __         __   __          __   __            __   __" << endl;
+    cout << "   ___________   __            __  __            __   ____________\n\n";
+
+    cout << "   ___________   __            __  ____________  _________   " << endl;
+    cout << "  __         __   __          __   __            __      __    " << endl;
+    cout << " __           __   __        __    __            __     __    " << endl;
+    cout << " __           __    __      __     __ ________   ________     " << endl;
+    cout << " __           __     __    __      __            __     __  " << endl;
+    cout << "  __         __       __  __       __            __      __ " << endl;
+    cout << "   ___________          __         ____________  __       __ " << endl;
+
+    slovaPruProigrashe(nomerPrigrasha);
+
+    cout << "\n\nPoints: " << balu << "\n\n\n";
+
+    knopkaStop = false;
+}
+
+void raspolozeniaFrykta(int raspolozenia1Frukta, int raspolozenia2Frukta, int nomerFrukta) {
+        raspolozenia1Frukta = 9 + rand() % (shuruna - 9);
+        raspolozenia2Frukta = 9 + rand() % (vusota - 9);
+        if (nomerFrukta == 1) {
+            raspolozenia1Frukta1 = raspolozenia1Frukta;
+            raspolozenia2Frukta1 = raspolozenia2Frukta;
+        }
+        if (nomerFrukta == 2) {
+            raspolozenia1Frukta2 = raspolozenia1Frukta;
+            raspolozenia2Frukta2 = raspolozenia2Frukta;
+        }
+        if (nomerFrukta == 3) {
+            raspolozenia1Frukta3 = raspolozenia1Frukta;
+            raspolozenia2Frukta4 = raspolozenia2Frukta;
+        }
+        if (nomerFrukta == 4) {
+            raspolozenia1Frukta4 = raspolozenia1Frukta;
+            raspolozenia2Frukta4 = raspolozenia2Frukta;
+        }
+        if (nomerFrukta == 5) {
+            raspolozenia1Frukta5 = raspolozenia1Frukta;
+            raspolozenia2Frukta5 = raspolozenia2Frukta;
+        }
+
+        xvost++;
+        balu = balu + (1 + rand() % 3);
+}
+
+void vEtouIgreNetLogiki() {
+    int prevedushaX = xvostX[0];
+    int prevedushaY = xvostY[0];
+    int prevedusha2X, prevedusha2Y;
+    xvostX[0] = raspolozeniaZmii1;
+    xvostY[0] = raspolozeniaZmii2;
+    for (int i = 1; i < xvost; i++) {
+        prevedusha2X = xvostX[i];
+        prevedusha2Y = xvostY[i];
+        xvostX[i] = prevedushaX;
+        xvostY[i] = prevedushaY;
+        prevedushaX = prevedusha2X;
+        prevedushaY = prevedusha2Y;
+
+    }
+    switch (napramok)
+    {
+    case levo:
+        raspolozeniaZmii1--;
+        zmia1 = "<";
+        break;
+    case pravo:
+        raspolozeniaZmii1++;
+        zmia1 = ">";
+        break;
+    case versh:
+        raspolozeniaZmii2--;
+        zmia1 = "^";
+        break;
+    case nuz:
+        raspolozeniaZmii2++;
+        zmia1 = "v";
+        break;
+    }
+
+    if (raspolozeniaZmii1 > (shuruna - 1) || raspolozeniaZmii1 < 0 || raspolozeniaZmii2 > vusota || raspolozeniaZmii2 < 0) {
+        astanaviteci = true;
+        int nomerPrigrasha = 1;
+        conecIgpu(nomerPrigrasha);
+
+    };
+
+    for (int i = 0; i < xvost; i++) {
+        if (xvostX[i] == raspolozeniaZmii1 && xvostY[i] == raspolozeniaZmii2) {
+            astanaviteci = true;
+            int nomerPrigrasha = 2;
+            conecIgpu(nomerPrigrasha);
+            
+        }
+    }
+
+    if (raspolozeniaZmii1 == raspolozenia1Frukta1 && raspolozeniaZmii2 == raspolozenia2Frukta1) {
+        raspolozeniaFrykta(raspolozenia1Frukta1, raspolozenia2Frukta1, 1);
+    }
+    if (raspolozeniaZmii1 == raspolozenia1Frukta2 && raspolozeniaZmii2 == raspolozenia2Frukta2) {
+        raspolozeniaFrykta(raspolozenia1Frukta2, raspolozenia2Frukta2, 2);
+    }
+    if (raspolozeniaZmii1 == raspolozenia1Frukta3 && raspolozeniaZmii2 == raspolozenia2Frukta3) {
+        raspolozeniaFrykta(raspolozenia1Frukta3, raspolozenia2Frukta3, 3);
+    }
+    if (raspolozeniaZmii1 == raspolozenia1Frukta4 && raspolozeniaZmii2 == raspolozenia2Frukta4) {
+        raspolozeniaFrykta(raspolozenia1Frukta4, raspolozenia2Frukta4, 4);
+    }
+    if (raspolozeniaZmii1 == raspolozenia1Frukta5 && raspolozeniaZmii2 == raspolozenia2Frukta5) {
+        raspolozeniaFrykta(raspolozenia1Frukta5, raspolozenia2Frukta5, 5);
+    }
+}
+
+
+
+int main()
+{
+    try {
+        srand(time(0));
+        setlocale(0, "rus");
+        cout << "<--------------------------------------------------------------------------->\n";
+        cout << "                             ___________\n";
+        cout << "                           =        __  #__   \n";
+        cout << "                          / X      (__)   *|\n";
+        cout << "                         |     G    ______/\n";
+        cout << "                         | O    __/\n";
+        cout << "                          #    |        GAME\n";
+        cout << "                           |    |___\n";
+        cout << "                          /   X |   #_______________\n";
+        cout << "                         / O  __|  O  _________ X   # \n";
+        cout << "                        |    |_________________|   O |\n";
+        cout << "                         #_________________________ /\n\n";
+        cout << "<--------------------------------------------------------------------------->\n";
+
+        Sleep(1000);
+        cout << "\n                               Management: " << endl;
+        cout << "                                 _______" << endl;
+        cout << "                                |   ^   |" << endl;
+        cout << "                                |   W   |" << endl;
+        cout << "                                 _______" << endl;
+        cout << "                       _______   _______   _______" << endl;
+        cout << "                      |       | |       | |       |" << endl;
+        cout << "                      | < A   | |   S   | |   D > |" << endl;
+        cout << "                       _______   ___v___   _______\n" << endl;
+        Sleep(1000);
+        cout << "Choose complexity(1 to 10) ";
+        cin >> sloznoste;
+        if (sloznoste < 1 || sloznoste > 10) {
+            throw 100;
+        }
+        knopkaStart();
+        bool stertUluNet = true;
+        while (stertUluNet == true) {
+            int nazatieNaKlavishi = _getch();
+            if (nazatieNaKlavishi == 32) {
+                nastroika();
+                while (!astanaviteci) {
+                    karta(sloznoste);
+                    atcleshuvanieDvizenie();
+                    vEtouIgreNetLogiki();
+                    while (!knopkaStop) {
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+    catch(const int pomulka){
+        if (pomulka == 100) {
+            cout << "This complexity does not exist\n";
+            int sloznoste = 3;
+            knopkaStart();
+            bool stertUluNet = true;
+            while (stertUluNet == true) {
+                int nazatieNaKlavishi = _getch();
+                if (nazatieNaKlavishi == 32) {
+                    nastroika();
+                    while (!astanaviteci) {
+                        karta(sloznoste);
+                        atcleshuvanieDvizenie();
+                        vEtouIgreNetLogiki();
+                        while (!knopkaStop) {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        } 
+    }
+}
